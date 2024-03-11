@@ -30,21 +30,21 @@
     <div class="schedule" id="schedule">Loading schedule...</div>
 
     <script>
-        const response = fetch('lib/schedule.json');
-        console.log(response)
+        // const response = fetch('lib/schedule.json');
+        // console.log(response)
 
         // const data = response.json();
 
         // Print the JSON to the console
         // console.log(data);
 
-        // fetch('schedule.json')
-            // .then(console.log('Fetching schedule...'))
-            // .then(response => response.json())
-        //     .then(data => {
-        //         document.getElementById('schedule').textContent = data;
-        //     })
-        //     .catch(error => console.error('Error:', error));
+        fetch('lib/schedule.json')
+            .then(console.log('Fetching schedule...'))
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('schedule').textContent = data;
+            })
+            .catch(error => console.error('Error:', error));
     </script>
 </body>
 </html>
