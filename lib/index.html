@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>On-call Ops</title>
+    <meta property="og:title" content="Week 1 #ask-b2b-product-and-engineering schedule" />
+    <meta property="og:description" content="" />
+    <!--meta property="og:image" content="https://example.com/path/to/your/image.jpg" /-->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <style>
+        body {
+            font-family: Helvetica Neue, Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .quote {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .explanation {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="schedule" id="schedule">Loading schedule...</div>
+
+    <script>
+        const response = fetch('schedule.json');
+        console.log(response)
+
+        // const data = response.json();
+
+        // Print the JSON to the console
+        // console.log(data);
+
+        // fetch('schedule.json')
+            // .then(console.log('Fetching schedule...'))
+            // .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById('schedule').textContent = data;
+        //     })
+        //     .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
