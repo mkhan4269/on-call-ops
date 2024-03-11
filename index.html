@@ -35,7 +35,7 @@
         const response = fetch('lib/schedule.json');
         console.log(response)
 
-        const data = response.json();
+        const data = JSON.parse(response);
 
         // Print the JSON to the console
         console.log(data);
