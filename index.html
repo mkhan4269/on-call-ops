@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -28,23 +29,36 @@
 </head>
 <body>
     <div class="schedule" id="schedule">Loading schedule...</div>
+    <div class="content" id="content"></div>
 
     <script>
-        // const response = fetch('lib/schedule.json');
-        // console.log(response)
+        const response = fetch('lib/schedule.json');
+        console.log(response)
 
-        // const data = response.json();
+        const data = response.json();
 
         // Print the JSON to the console
-        // console.log(data);
+        console.log(data);
 
-        fetch('lib/schedule.json')
-            .then(console.log('Fetching schedule...'))
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('schedule').textContent = data;
-            })
-            .catch(error => console.error('Error:', error));
+        // fetch('lib/schedule.json')
+        //     .then(console.log('Fetching schedule...'))
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById('schedule').textContent = data;
+        //     })
+        //     .catch(error => console.error('Error:', error));
+
+        // var resData = {"key1":"value","key2":"value"};
+
+        var table_str = '<table><thead><tr><th>Filter</th><th>Values</th></tr></thead>';
+
+        table_str += '<tbody>';
+
+        $.each(data, function(key, value){
+            table_str +='<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+        });
+        $("#content").html(table_str);
+        console.log(table_str);
     </script>
 </body>
 </html>
