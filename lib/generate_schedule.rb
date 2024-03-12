@@ -51,8 +51,8 @@ end
 
 puts ENV['PD_TOKEN'].present?
 # TODO
-user_team1 = pull_pg_schedule(schedule_id: "P1")
-user_team2 = pull_pg_schedule(schedule_id: "P2")
-user_team3 = pull_pg_schedule(schedule_id: "P3")
+user_team1 = pull_pg_schedule(schedule_id: "PGONDG5")
+user_team2 = pull_pg_schedule(schedule_id: "P0QYXI3")
+user_team3 = pull_pg_schedule(schedule_id: "PWAVTID")
 
 insert_schedule(team1: user_team1, team2: user_team2, team3: user_team3)
