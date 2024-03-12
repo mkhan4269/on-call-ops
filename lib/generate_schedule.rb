@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'json'
-SCHEDULE_FILE = 'lib/schedule.json'
+SCHEDULE_FILE = 'schedule.json'
 
 def pull_pg_schedule
-  file_content = JSON.parse(File.read('lib/pg_response.json'))
+  file_content = JSON.parse(File.read('pg_response.json'))
   file_content['oncalls'][0]['user']['summary']
 end
 

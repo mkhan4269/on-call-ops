@@ -20,7 +20,7 @@ jobs:
         ruby-version: '3.2'
 
     - name: Generate and save schedule
-      run: ruby generate_schedule.rb
+      run: ruby lib/generate_schedule.rb
 
     - name: Commit and push if changed
       run: |
