@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs every 12th of the month at 16:00
     # - cron: '0 16 12 3 *'
-    - cron: '*/15 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:

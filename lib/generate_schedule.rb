@@ -49,8 +49,6 @@ def save_to_json(json_string)
   end
 end
 
-puts ENV['PD_TOKEN'].present?
-# TODO
 user_team1 = pull_pg_schedule(schedule_id: "PGONDG5")
 user_team2 = pull_pg_schedule(schedule_id: "P0QYXI3")
 user_team3 = pull_pg_schedule(schedule_id: "PWAVTID")
