@@ -1,0 +1,28 @@
+{
+    "oncalls": [
+        {
+            "escalation_policy": {
+                "id": "PBSMTFW",
+                "type": "escalation_policy_reference",
+                "summary": "Team 1"
+            },
+            "escalation_level": 1,
+            "schedule": {
+                "id": "PGONDG5",
+                "type": "schedule_reference",
+                "summary": "Team 1"
+            },
+            "user": {
+                "id": "PKXOFER",
+                "type": "user_reference",
+                "summary": "John Doe"
+            },
+            "start": "2024-03-11T09:00:00Z",
+            "end": "2024-03-11T17:30:00Z"
+        }
+    ],
+    "limit": 25,
+    "offset": 0,
+    "more": false,
+    "total": null
+}
