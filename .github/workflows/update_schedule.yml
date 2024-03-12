@@ -22,6 +22,15 @@ jobs:
     - name: Generate and save schedule
       run: ruby lib/generate_schedule.rb
 
+    - name: Check secret is loaded
+      run: |
+        if [ -z "${{ secrets.GH_PAT }}" ]; then
+          echo "Secret is empty or not loaded!"
+          exit 1
+        else
+          echo "Secret is loaded!"
+        fi
+
     - name: Commit and push if changed
       run: |
         git config user.name "GitHub Actions"
