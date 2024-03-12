@@ -55,8 +55,8 @@ def update_og_headers
   json_string = JSON.parse(File.read(SCHEDULE_FILE), { symbolize_names: true })
   description = create_description(json_string.last)
   html_content = File.read(VIEW_FILE)
-  new_meta_tag = "<meta property='og:description' content='#{description}'>"
-  modified_content = html_content.gsub(/<meta property="og:description" content="[^"]*"/, new_meta_tag)
+  new_meta_tag = "<meta property='og:description' content='#{description}'"
+  modified_content = html_content.gsub(/<meta property='og:description' content='[^"]*'/, new_meta_tag)
   File.write(VIEW_FILE, modified_content)
 end
 
