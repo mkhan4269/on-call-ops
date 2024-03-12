@@ -8,7 +8,7 @@ def pull_pg_schedule
   file_content['oncalls'][0]['user']['summary']
 end
 
-def insert_schedule(team1:, team2:)
+def insert_schedule(team1:, team2:, team3:)
   file_content = File.read(SCHEDULE_FILE)
   data = JSON.parse(file_content)
   current_week = data[data.size - 1]['week'] + 1
