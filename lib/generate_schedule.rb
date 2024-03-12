@@ -17,7 +17,7 @@ end
 def get_response(schedule_id:)
   uri = URI("https://api.pagerduty.com/oncalls?schedule_ids[]=#{schedule_id}")
   request = Net::HTTP::Get.new(uri)
-  request['Authorization'] = ENV['PD_TOKEN']
+  request['Authorization'] = "Token token=#{ENV['PD_TOKEN']}"
   request['Accept'] = "application/vnd.pagerduty+json;version=2"
 
   response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
