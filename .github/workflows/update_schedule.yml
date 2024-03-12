@@ -29,4 +29,4 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/apoorva-babbel/literate-chainsaw.git
         git add lib
         git commit -m "Test update" || exit 0   # This will exit with 0 if there's nothing to commit
-        git push
+        git push origin HEAD:main
