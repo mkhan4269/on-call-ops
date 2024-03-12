@@ -2,12 +2,13 @@ name: Update Schedule
 
 on:
   schedule:
-    # Runs every 12th of the month at 11:15
-    - cron: '15 11 12 * *'
+    # Runs every 12th of the month at 16:00
+    # - cron: '0 16 12 3 *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
-  update-date:
+  update-schedule:
     runs-on: ubuntu-latest
 
     steps:
