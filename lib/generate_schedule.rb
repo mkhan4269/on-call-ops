@@ -3,6 +3,7 @@
 require 'json'
 require 'uri'
 require 'net/http'
+require 'date'
 SCHEDULE_FILE = 'lib/schedule.json'
 
 def pull_pg_schedule(schedule_id:)
@@ -28,13 +29,12 @@ end
 
 def insert_schedule(team1:, team2:, team3:)
   data = JSON.parse(File.read(SCHEDULE_FILE))
-  current_week = data[data.size - 1]['week'] + 1
 
   new_schedule = {
     "team1": team1,
     "team2": team2,
     "team3": team3,
-    "week": current_week
+    "week": Date.today.strftime('%V')
   }
 
   data << new_schedule
