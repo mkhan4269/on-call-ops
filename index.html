@@ -17,48 +17,45 @@
             text-align: center;
             margin-top: 100px;
         }
-        .quote {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .explanation {
-            margin-top: 20px;
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
-    <div class="schedule" id="schedule">Loading schedule...</div>
-    <div class="content" id="content"></div>
+    <table id="jsonTable" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Week Number</th>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Team 3</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script>
-        const response = fetch('lib/schedule.json');
-        console.log(response)
+        $(document).ready(function() {
+            // Fetch the JSON file
+            $.getJSON("schedule.json", function(data) {
+                // Iterate over the JSON array
+                $.each(data, function(index, entry) {
+                    // Create a new row
+                    var row = $("<tr></tr>");
+                    console.log(entry)
 
-        const data = JSON.parse(response);
+                    // Append table data with the name and age
+                    row.append($("<td></td>").text(entry.week));
+                    row.append($("<td></td>").text(entry.team1));
+                    row.append($("<td></td>").text(entry.team2));
+                    row.append($("<td></td>").text(entry.team3));
 
-        // Print the JSON to the console
-        console.log(data);
-
-        // fetch('lib/schedule.json')
-        //     .then(console.log('Fetching schedule...'))
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         document.getElementById('schedule').textContent = data;
-        //     })
-        //     .catch(error => console.error('Error:', error));
-
-        // var resData = {"key1":"value","key2":"value"};
-
-        var table_str = '<table><thead><tr><th>Filter</th><th>Values</th></tr></thead>';
-
-        table_str += '<tbody>';
-
-        $.each(data, function(key, value){
-            table_str +='<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+                    // Append the row to the table body
+                    $("#jsonTable tbody").append(row);
+                });
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                // Handle any errors that occur during the fetch
+                console.error("Error fetching JSON: " + textStatus);
+            });
         });
-        $("#content").html(table_str);
-        console.log(table_str);
     </script>
 </body>
 </html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>On-call Ops</title>
+    <meta property="og:title" content="Week 1 #ask-b2b-product-and-engineering schedule" />
+    <meta property="og:description" content="" />
+    <!--meta property="og:image" content="https://example.com/path/to/your/image.jpg" /-->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <style>
+        body {
+            font-family: Helvetica Neue, Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .quote {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .explanation {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+    <div class="schedule" id="schedule">Loading schedule...</div>
+    <div class="content" id="content"></div>
+
+    <script>
+        const response = fetch('schedule.json',{
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           }
+         });
+        console.log(response);
+
+        const data = JSON.parse(response);
+
+        // Print the JSON to the console
+        console.log(data);
+
+        // fetch('lib/schedule.json')
+        //     .then(console.log('Fetching schedule...'))
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById('schedule').textContent = data;
+        //     })
+        //     .catch(error => console.error('Error:', error));
+
+        // var resData = {"key1":"value","key2":"value"};
+
+        var table_str = '<table><thead><tr><th>Filter</th><th>Values</th></tr></thead>';
+
+        table_str += '<tbody>';
+
+        $.each(data, function(key, value){
+            table_str +='<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+        });
+        $("#content").html(table_str);
+        console.log(table_str);
+    </script>
+</body>
+</html>
