@@ -17,7 +17,7 @@ end
 def get_response(schedule_id:)
   uri = URI("https://api.pagerduty.com/oncalls?schedule_ids[]=#{schedule_id}")
   request = Net::HTTP::Get.new(uri)
-  request['Authorization'] = "" #TODO
+  request['Authorization'] = ENV['PD_TOKEN']
   request['Accept'] = "application/vnd.pagerduty+json;version=2"
 
   response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
@@ -49,7 +49,7 @@ def save_to_json(json_string)
   end
 end
 
-puts ENV['TEST']
+puts ENV['PD_TOKEN'].present?
 # TODO
 user_team1 = pull_pg_schedule(schedule_id: "P1")
 user_team2 = pull_pg_schedule(schedule_id: "P2")

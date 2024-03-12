@@ -20,17 +20,19 @@ jobs:
       with:
         ruby-version: '3.2'
 
-    - name: Generate and save schedule
-      run: ruby lib/generate_schedule.rb
-
     - name: Check secret is loaded
       run: |
-        if [ -z "${{ secrets.GH_PAT }}" ]; then
+        if [ -z "${{ secrets.PD_TOKEN }}" ]; then
           echo "Secret is empty or not loaded!"
           exit 1
         else
           echo "Secret is loaded!"
         fi
+
+    - name: Generate and save schedule
+      env:
+        PD_TOKEN: ${{ secrets.PD_TOKEN }}
+      run: ruby lib/generate_schedule.rb
 
     - name: Commit and push if changed
       run: |
