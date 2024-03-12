@@ -1,22 +1,39 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'uri'
+require 'net/http'
 SCHEDULE_FILE = 'lib/schedule.json'
 
-def pull_pg_schedule
-  file_content = JSON.parse(File.read('lib/pg_response.json'))
-  file_content['oncalls'][0]['user']['summary']
+def pull_pg_schedule(schedule_id:)
+  response = get_response(schedule_id: schedule_id)
+  mask_results(response[:oncalls][0][:user][:summary])
+end
+
+def mask_results(str)
+  str.gsub(/.(?=.{4})/, '#')
+end
+
+def get_response(schedule_id:)
+  uri = URI("https://api.pagerduty.com/oncalls?schedule_ids[]=#{schedule_id}")
+  request = Net::HTTP::Get.new(uri)
+  request['Authorization'] = "" #TODO
+  request['Accept'] = "application/vnd.pagerduty+json;version=2"
+
+  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+    http.request(request)
+  end
+  JSON.parse(response.body, { symbolize_names: true })
 end
 
 def insert_schedule(team1:, team2:, team3:)
-  file_content = File.read(SCHEDULE_FILE)
-  data = JSON.parse(file_content)
+  data = JSON.parse(File.read(SCHEDULE_FILE))
   current_week = data[data.size - 1]['week'] + 1
 
   new_schedule = {
     "team1": team1,
     "team2": team2,
-    "team3": 'Emily Johnson',
+    "team3": team3,
     "week": current_week
   }
 
@@ -32,8 +49,10 @@ def save_to_json(json_string)
   end
 end
 
-user_team1 = pull_pg_schedule
-user_team2 = pull_pg_schedule
-user_team3 = pull_pg_schedule
+puts ENV['TEST']
+# TODO
+user_team1 = pull_pg_schedule(schedule_id: "P1")
+user_team2 = pull_pg_schedule(schedule_id: "P2")
+user_team3 = pull_pg_schedule(schedule_id: "P3")
 
 insert_schedule(team1: user_team1, team2: user_team2, team3: user_team3)
