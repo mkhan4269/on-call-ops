@@ -53,11 +53,19 @@ end
 
 def update_og_headers
   json_string = JSON.parse(File.read(SCHEDULE_FILE), { symbolize_names: true })
+  description = create_description(json_string.last)
   html_content = File.read(VIEW_FILE)
-  old_meta_tag = '<meta property="og:description" content="Lorem ipsum" />'
-  new_meta_tag = "<meta property='og:description' content='New Description #{Date.today.strftime('%V')}'>"
-  modified_content = html_content.gsub(old_meta_tag, new_meta_tag)
+  new_meta_tag = "<meta property='og:description' content='#{description}'>"
+  modified_content = html_content.gsub(/<meta property="og:description" content="[^"]*"/, new_meta_tag)
   File.write(VIEW_FILE, modified_content)
+end
+
+def create_description(hash)
+  [
+    "B2B Platform: #{hash[:team1]}",
+    "B2B Data Insights: #{hash[:team2]}",
+    "B2B Enterprise: #{hash[:team3]}"
+  ].join('; ')
 end
 
 user_team1 = pull_pg_schedule(schedule_id: "PGONDG5")
