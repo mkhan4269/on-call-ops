@@ -68,9 +68,18 @@ def create_description(hash)
   ].join('; ')
 end
 
+def clear_schedule
+  data = JSON.parse(File.read(SCHEDULE_FILE))
+  current_length = data.length
+  desired_length = 11
+  data.shift(current_length - desired_length) if current_length > desired_length
+  save_to_json(JSON.pretty_generate(data))
+end
+
 user_team1 = pull_pg_schedule(schedule_id: "PGONDG5")
 user_team2 = pull_pg_schedule(schedule_id: "P0QYXI3")
 user_team3 = pull_pg_schedule(schedule_id: "PWAVTID")
 
+clear_schedule
 insert_schedule(team1: user_team1, team2: user_team2, team3: user_team3)
 update_og_headers
