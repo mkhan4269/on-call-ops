@@ -10,6 +10,7 @@ VIEW_FILE = 'index.html'
 
 def pull_pg_schedule(schedule_id:)
   response = get_response(schedule_id: schedule_id)
+  puts response
   mask_results(response[:oncalls][0][:user][:summary])
 end
 

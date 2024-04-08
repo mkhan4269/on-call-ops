@@ -2,8 +2,8 @@ name: Update Schedule
 
 on:
   schedule:
-    # Runs at 05:00 every Monday
-    - cron: '0 5 * * 1'
+    # Runs at 10:15 every day
+    - cron: '15 10 * * *'
   workflow_dispatch:
 
 jobs:
