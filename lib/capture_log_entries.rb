@@ -7,8 +7,7 @@ require 'date'
 
 LOG_ENTRIES_FILE = 'tmp/log_entries.json'
 LIMIT = 25
-# TODO: Add public holidays logic
-# public_holidays_2024 = []
+PUBLIC_HOLIDAYS_2024 = ["2024-05-01", "2024-05-09", "2024-05-20", "2024-10-03", "2024-12-25", "2024-12-26"]
 
 def pull_log_entries(offset: 0)
   response = get_response(offset: offset)
@@ -91,7 +90,7 @@ def determine_work_hours_and_urgency(log_entries)
   log_entries.map do |entry|
     time = DateTime.parse(entry[:incident][:created_at]) + (2.0 / 24.0)
     incidents_created_at[entry[:incident][:incident_number]] = {
-      in_work_hours: on_work_hours?(time) && !in_weekend?(time),
+      in_work_hours: on_work_hours?(time) && !in_weekend?(time) && !on_public_holiday?(time),
       urgency: entry[:incident][:urgency]
     }
   end
@@ -108,6 +107,10 @@ end
 
 def in_weekend?(time)
   time.saturday? || time.sunday?
+end
+
+def on_public_holiday?(time)
+  PUBLIC_HOLIDAYS_2024.include? time.strftime('%Y-%m-%d')
 end
 
 clear_log_entries
