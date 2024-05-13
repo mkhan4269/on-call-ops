@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <title>On-call Ops</title>
     <meta property="og:title" content="This Week's #ask-b2b-product-and-engineering schedule" />
-    <meta property='og:description' content='B2B Platform: ########Jain; B2B Data Insights: ############mitt; B2B Enterprise: #################oodi'>
+    <meta property='og:description'
+        content='B2B Platform: ########Jain; B2B Data Insights: ############mitt; B2B Enterprise: #################oodi'>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="On-call Ops" />
     <style>
         body {
             font-family: Helvetica Neue, Arial, sans-serif;
             text-align: center;
-            margin-top: 100px;
+            /* margin-top: 100px; */
+        }
+
+        .lineChart {
+            max-width: 450px;
+            /* or any other max-width */
+            max-height: 300px;
+            /* or any other max-height */
+            display: inline-block !important;
+            margin: 30px;
+            /* width: 50%; */
         }
     </style>
 </head>
+
 <body>
+    <canvas class="lineChart" id="myLineChart"></canvas>
+    <canvas class="lineChart" id="myLineChart1"></canvas>
     <table id="jsonTable" style="width: 100%;">
         <thead>
             <tr>
@@ -32,29 +48,82 @@
     </table>
 
     <script>
-        $(document).ready(function() {
-            // Fetch the JSON file
-            $.getJSON("lib/schedule.json", function(data) {
-                // Iterate over the JSON array
-                $.each(data, function(index, entry) {
-                    // Create a new row
-                    var row = $("<tr></tr>");
-                    console.log(entry)
+        // $(document).ready(function() {
+        //     // Fetch the JSON file
+        //     $.getJSON("lib/schedule.json", function(data) {
+        //         // Iterate over the JSON array
+        //         $.each(data, function(index, entry) {
+        //             // Create a new row
+        //             var row = $("<tr></tr>");
+        //             console.log(entry)
 
-                    // Append table data with the name and age
-                    row.append($("<td></td>").text(entry.week));
-                    row.append($("<td></td>").text(entry.team1));
-                    row.append($("<td></td>").text(entry.team2));
-                    row.append($("<td></td>").text(entry.team3));
+        //             // Append table data with the name and age
+        //             row.append($("<td></td>").text(entry.week));
+        //             row.append($("<td></td>").text(entry.team1));
+        //             row.append($("<td></td>").text(entry.team2));
+        //             row.append($("<td></td>").text(entry.team3));
 
-                    // Append the row to the table body
-                    $("#jsonTable tbody").append(row);
-                });
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                // Handle any errors that occur during the fetch
-                console.error("Error fetching JSON: " + textStatus);
-            });
-        });
+        //             // Append the row to the table body
+        //             $("#jsonTable tbody").append(row);
+        //         });
+        //     }).fail(function(jqXHR, textStatus, errorThrown) {
+        //         // Handle any errors that occur during the fetch
+        //         console.error("Error fetching JSON: " + textStatus);
+        //     });
+        // });
+
+        // Example JSON data
+        const jsonData = []
+
+        // Parse JSON data
+        const data = JSON.parse(jsonData);
+
+        // Extract dates and values
+        const labels = data.map(item => item.date);
+        const platformIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
+        const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
+
+        // Setup the data to be used by Chart.js
+        const chartData = {
+            labels: labels,
+            datasets: [{
+                label: 'B2B Platform',
+                data: platformIncidentsOnWorkHoursLowUrgency,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }, {
+                label: 'B2B Data Insights',
+                data: dataInsightsIncidentsOnWorkHoursLowUrgency,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Configuration options
+        const config = {
+            type: 'line',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Render the chart
+        const myLineChart = new Chart(
+            document.getElementById('myLineChart'),
+            config
+        );
+
+        // Render the chart
+        const myLineChart1 = new Chart(
+            document.getElementById('myLineChart1'),
+            config
+        );
     </script>
 </body>
+
 </html>
