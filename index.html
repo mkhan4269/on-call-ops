@@ -43,18 +43,19 @@
     </table>
 
     <script>
+         let globalData = null;
         // TODO: Use another method
         fetch('lib/team_metrics.json')
             .then(response => response.json())
             .then(data => {
-                const data = data;
+                globalData = data;
             })
             .catch(error => console.error('Error loading the JSON file:', error));
 
         // Extract dates and values
-        const labels = data.map(item => item.date);
-        const platformIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
-        const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
+        const labels = globalData.map(item => item.date);
+        const platformIncidentsOnWorkHoursLowUrgency = globalData.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
+        const dataInsightsIncidentsOnWorkHoursLowUrgency = globalData.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
 
         // Setup the data to be used by Chart.js
         const chartData = {
