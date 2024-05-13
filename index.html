@@ -45,11 +45,11 @@
     <script>
         async function fetchData() {
             try {
-            const response = await fetch('lib/team_metrics.json');
-            const data = await response.json();
-            return data;
+                const response = await fetch('lib/team_metrics.json');
+                const data = await response.json();
+                return data;
             } catch (error) {
-            console.error('Failed to fetch data:', error);
+                console.error('Failed to fetch data:', error);
             }
         }
 
@@ -81,21 +81,21 @@
                 }]
             };
 
-            createChart(config, 'myLineChart1', chartData)
-            createChart(config, 'myLineChart', chartData)
+            createChart('myLineChart1', chartData)
+            createChart('myLineChart', chartData)
 
-            function createChart(config, elementId, chartData) {
-                const myLineChart = new Chart(
-                document.getElementById(elementId),
-                setConfig(chartData)
+            function createChart(elementId, chartData) {
+                return new Chart(
+                    document.getElementById(elementId),
+                    setConfig(chartData)
                 );
             }
 
             function setConfig(chartData) {
-                const config = {
-                type: 'line',
-                data: chartData,
-                options: {
+                return {
+                    type: 'line',
+                    data: chartData,
+                    options: {
                         scales: {
                             y: {
                                 beginAtZero: true
