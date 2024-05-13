@@ -54,14 +54,12 @@
         }
 
         fetchData().then(data => {
-            console.log(data);  // 'data' is accessible here because it was returned from 'fetchData'
+            console.log(data);
             // Extract dates and values
             const labels = data.map(item => item.date);
             const platformIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
             const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
-            console.log(labels);
-            console.log(platformIncidentsOnWorkHoursLowUrgency);
-            console.log(dataInsightsIncidentsOnWorkHoursLowUrgency);
+            const enterpriseIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Enterprise"]["incidents_on_work_hours"]["low_urgency"]);
 
             // Setup the data to be used by Chart.js
             const chartData = {
@@ -69,12 +67,17 @@
                 datasets: [{
                     label: 'B2B Platform',
                     data: platformIncidentsOnWorkHoursLowUrgency,
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: '#434343',
                     borderWidth: 1
                 }, {
                     label: 'B2B Data Insights',
                     data: dataInsightsIncidentsOnWorkHoursLowUrgency,
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderColor: '#9900ff',
+                    borderWidth: 1
+                }, {
+                    label: 'B2B Enterprise',
+                    data: enterpriseIncidentsOnWorkHoursLowUrgency,
+                    borderColor: '#33a854',
                     borderWidth: 1
                 }]
             };
