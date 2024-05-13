@@ -61,40 +61,43 @@
             const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
             const enterpriseIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Enterprise"]["incidents_on_work_hours"]["low_urgency"]);
 
-            const chartData = {
-                labels: labels,
-                datasets: [{
-                    label: 'B2B Platform',
-                    data: platformIncidentsOnWorkHoursLowUrgency,
-                    borderColor: '#434343',
-                    borderWidth: 1
-                }, {
-                    label: 'B2B Data Insights',
-                    data: dataInsightsIncidentsOnWorkHoursLowUrgency,
-                    borderColor: '#9900ff',
-                    borderWidth: 1
-                }, {
-                    label: 'B2B Enterprise',
-                    data: enterpriseIncidentsOnWorkHoursLowUrgency,
-                    borderColor: '#33a854',
-                    borderWidth: 1
-                }]
-            };
+            function setChartData(metric) {
+                console.log(metric)
+                return {
+                    labels: labels,
+                    datasets: [{
+                        label: 'B2B Platform',
+                        data: platformIncidentsOnWorkHoursLowUrgency,
+                        borderColor: '#434343',
+                        borderWidth: 1
+                    }, {
+                        label: 'B2B Data Insights',
+                        data: dataInsightsIncidentsOnWorkHoursLowUrgency,
+                        borderColor: '#9900ff',
+                        borderWidth: 1
+                    }, {
+                        label: 'B2B Enterprise',
+                        data: enterpriseIncidentsOnWorkHoursLowUrgency,
+                        borderColor: '#33a854',
+                        borderWidth: 1
+                    }]
+                };
+            }
 
-            createChart('myLineChart1', chartData)
-            createChart('myLineChart', chartData)
+            createChart('myLineChart1', 'on_work_low_urgency')
+            createChart('myLineChart', 'on_work_high_urgency')
 
-            function createChart(elementId, chartData) {
+            function createChart(elementId, metric) {
                 return new Chart(
                     document.getElementById(elementId),
-                    setConfig(chartData)
+                    setConfig(metric)
                 );
             }
 
-            function setConfig(chartData) {
+            function setConfig(metric) {
                 return {
                     type: 'line',
-                    data: chartData,
+                    data: setChartData(metric),
                     options: {
                         scales: {
                             y: {
