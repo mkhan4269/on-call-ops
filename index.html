@@ -47,8 +47,7 @@
             try {
             const response = await fetch('lib/team_metrics.json');
             const data = await response.json();
-            console.log(data);  // 'data' is accessible here
-            return data;  // You can return 'data' which makes it accessible outside by the caller
+            return data;
             } catch (error) {
             console.error('Failed to fetch data:', error);
             }
@@ -56,13 +55,15 @@
 
         fetchData().then(data => {
             console.log(data);  // 'data' is accessible here because it was returned from 'fetchData'
+            // Extract dates and values
+            const labels = data.map(item => item.date);
+            const platformIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
+            const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
+            console.log(labels);
+            console.log(platformIncidentsOnWorkHoursLowUrgency);
+            console.log(dataInsightsIncidentsOnWorkHoursLowUrgency);
         });
-
-        // Extract dates and values
-        const labels = globalData.map(item => item.date);
-        const platformIncidentsOnWorkHoursLowUrgency = globalData.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
-        const dataInsightsIncidentsOnWorkHoursLowUrgency = globalData.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
-
+        
         // Setup the data to be used by Chart.js
         const chartData = {
             labels: labels,
