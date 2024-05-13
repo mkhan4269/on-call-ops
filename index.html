@@ -61,7 +61,6 @@
             const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
             const enterpriseIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Enterprise"]["incidents_on_work_hours"]["low_urgency"]);
 
-            // Setup the data to be used by Chart.js
             const chartData = {
                 labels: labels,
                 datasets: [{
@@ -82,30 +81,29 @@
                 }]
             };
 
-            // Configuration options
-            const config = {
+            createChart(config, 'myLineChart1', chartData)
+            createChart(config, 'myLineChart', chartData)
+
+            function createChart(config, elementId, chartData) {
+                const myLineChart = new Chart(
+                document.getElementById(elementId),
+                setConfig(chartData)
+                );
+            }
+
+            function setConfig(chartData) {
+                const config = {
                 type: 'line',
                 data: chartData,
                 options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            };
-
-            // Render the chart
-            const myLineChart = new Chart(
-                document.getElementById('myLineChart'),
-                config
-            );
-
-            // Render the chart
-            const myLineChart1 = new Chart(
-                document.getElementById('myLineChart1'),
-                config
-            );
+                };
+            }
         });
     </script>
 </body>
