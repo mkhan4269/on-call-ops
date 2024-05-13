@@ -63,11 +63,13 @@
 
             function setChartData(metric) {
                 console.log(metric)
+                console.log(metric.split('-'))
+                const a = metric.split('-')
                 return {
                     labels: labels,
                     datasets: [{
                         label: 'B2B Platform',
-                        data: platformIncidentsOnWorkHoursLowUrgency,
+                        data: data.map(item => item["B2B Platform"][a[0]][a[1]]),
                         borderColor: '#434343',
                         borderWidth: 1
                     }, {
@@ -84,8 +86,8 @@
                 };
             }
 
-            createChart('myLineChart1', 'on_work_low_urgency')
-            createChart('myLineChart', 'on_work_high_urgency')
+            createChart('myLineChart1', 'incidents_on_work_hours-low_urgency')
+            createChart('myLineChart', 'incidents_on_work_hours-high_urgency')
 
             function createChart(elementId, metric) {
                 return new Chart(
