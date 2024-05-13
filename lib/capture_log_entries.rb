@@ -6,8 +6,11 @@ require 'net/http'
 require 'date'
 
 LOG_ENTRIES_FILE = 'tmp/log_entries.json'
+TEAM_METRICS_FILE = 'lib/team_metrics.json'
 LIMIT = 25
 PUBLIC_HOLIDAYS_2024 = ["2024-05-01", "2024-05-09", "2024-05-20", "2024-10-03", "2024-12-25", "2024-12-26"]
+TEAM_IDS = ['P4G8TAV', 'PX5Y95N', 'P71QVSL']
+TEAMS = ['B2B Platform', 'B2B Enterprise', 'B2B Data Insights']
 
 def pull_log_entries(offset: 0)
   response = get_response(offset: offset)
@@ -19,8 +22,7 @@ def pull_log_entries(offset: 0)
 end
 
 def get_response(offset: 0)
-  teams_ids = ['P4G8TAV', 'PX5Y95N', 'P71QVSL']
-  teams_param = teams_ids.map { |x| "team_ids[]=#{x}" }.join('&')
+  teams_param = TEAM_IDS.map { |x| "team_ids[]=#{x}" }.join('&')
   since = "#{Date.today - 14}T00:00:00Z"
   until_today = "#{Date.today}T00:00:00Z"
 
@@ -35,16 +37,16 @@ def get_response(offset: 0)
   JSON.parse(response.body, { symbolize_names: true })
 end
 
-def insert_log_entries(log_entries:)
-  data = JSON.parse(File.read(LOG_ENTRIES_FILE))
+def insert_log_entries(log_entries:, file: LOG_ENTRIES_FILE)
+  data = JSON.parse(File.read(file))
   data << log_entries
   updated_json_content = JSON.pretty_generate(data.flatten)
 
-  save_to_json(updated_json_content)
+  save_to_json(updated_json_content, file)
 end
 
-def save_to_json(json_string)
-  File.open(LOG_ENTRIES_FILE, 'w') do |f|
+def save_to_json(json_string, file)
+  File.open(file, 'w') do |f|
     f.write(json_string)
   end
 end
@@ -59,10 +61,9 @@ end
 def generate_metrics
   data = JSON.parse(File.read(LOG_ENTRIES_FILE), { symbolize_names: true })
   grouped_by_team = data.group_by { |log_entry| log_entry[:teams][0][:summary] }
-  teams = grouped_by_team.keys
 
-  metrics = {}
-  teams.each do |team|
+  metrics = { date: "#{(Date.today - 14).strftime('%d %b')} - #{Date.today.strftime('%d %b')}" }
+  TEAMS.each do |team|
     grouped_by_incident = grouped_by_team[team].group_by { |log_entry| log_entry[:incident][:incident_number] }
     incidents = determine_work_hours_and_urgency(grouped_by_incident.map { |_k, v| v[0] })
     on_work_hours_low_urgency = incidents.select { |_k, v| v[:in_work_hours] && v[:urgency] == 'low' }
@@ -82,7 +83,7 @@ def generate_metrics
       }
     }
   end
-  puts metrics
+  insert_log_entries(log_entries: metrics, file: TEAM_METRICS_FILE)
 end
 
 def determine_work_hours_and_urgency(log_entries)
