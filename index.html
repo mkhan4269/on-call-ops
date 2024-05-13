@@ -28,8 +28,11 @@
 </head>
 
 <body>
-    <canvas class="lineChart" id="myLineChart"></canvas>
-    <canvas class="lineChart" id="myLineChart1"></canvas>
+    <canvas class="lineChart" id="incidents_on_work_hours_low_urgency"></canvas>
+    <canvas class="lineChart" id="incidents_on_work_hours_high_urgency"></canvas>
+    <canvas class="lineChart" id="incidents_off_work_hours_low_urgency"></canvas>
+    <canvas class="lineChart" id="incidents_off_work_hours_high_urgency"></canvas>
+
     <table id="jsonTable" style="width: 100%;">
         <thead>
             <tr>
@@ -55,15 +58,10 @@
 
         fetchData().then(data => {
             console.log(data);
-            // Extract dates and values
+
             const labels = data.map(item => item.date);
-            const platformIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Platform"]["incidents_on_work_hours"]["low_urgency"]);
-            const dataInsightsIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Data Insights"]["incidents_on_work_hours"]["low_urgency"]);
-            const enterpriseIncidentsOnWorkHoursLowUrgency = data.map(item => item["B2B Enterprise"]["incidents_on_work_hours"]["low_urgency"]);
 
             function setChartData(metric) {
-                console.log(metric)
-                console.log(metric.split('-'))
                 const a = metric.split('-')
                 return {
                     labels: labels,
@@ -74,20 +72,17 @@
                         borderWidth: 1
                     }, {
                         label: 'B2B Data Insights',
-                        data: dataInsightsIncidentsOnWorkHoursLowUrgency,
+                        data: data.map(item => item["B2B Data Insights"][a[0]][a[1]]),
                         borderColor: '#9900ff',
                         borderWidth: 1
                     }, {
                         label: 'B2B Enterprise',
-                        data: enterpriseIncidentsOnWorkHoursLowUrgency,
+                        data: data.map(item => item["B2B Enterprise"][a[0]][a[1]]),
                         borderColor: '#33a854',
                         borderWidth: 1
                     }]
                 };
             }
-
-            createChart('myLineChart1', 'incidents_on_work_hours-low_urgency')
-            createChart('myLineChart', 'incidents_on_work_hours-high_urgency')
 
             function createChart(elementId, metric) {
                 return new Chart(
@@ -109,6 +104,11 @@
                     }
                 };
             }
+
+            createChart('incidents_on_work_hours_low_urgency', 'incidents_on_work_hours-low_urgency')
+            createChart('incidents_on_work_hours_high_urgency', 'incidents_on_work_hours-high_urgency')
+            createChart('incidents_off_work_hours_low_urgency', 'incidents_off_work_hours-low_urgency')
+            createChart('incidents_off_work_hours_high_urgency', 'incidents_off_work_hours-high_urgency')
         });
     </script>
 </body>
