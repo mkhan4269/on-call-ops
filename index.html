@@ -43,14 +43,20 @@
     </table>
 
     <script>
-         let globalData = null;
-        // TODO: Use another method
-        fetch('lib/team_metrics.json')
-            .then(response => response.json())
-            .then(data => {
-                globalData = data;
-            })
-            .catch(error => console.error('Error loading the JSON file:', error));
+        async function fetchData() {
+            try {
+            const response = await fetch('lib/team_metrics.json');
+            const data = await response.json();
+            console.log(data);  // 'data' is accessible here
+            return data;  // You can return 'data' which makes it accessible outside by the caller
+            } catch (error) {
+            console.error('Failed to fetch data:', error);
+            }
+        }
+
+        fetchData().then(data => {
+            console.log(data);  // 'data' is accessible here because it was returned from 'fetchData'
+        });
 
         // Extract dates and values
         const labels = globalData.map(item => item.date);
