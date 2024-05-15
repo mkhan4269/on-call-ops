@@ -3,7 +3,7 @@ name: Update Metrics
 on:
   schedule:
     # Runs at 10:15 every day
-    - cron: '15 10 * * *'
+    - cron: '20 8 * * *'
   workflow_dispatch:
 
 jobs:
