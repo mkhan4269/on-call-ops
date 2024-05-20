@@ -12,7 +12,7 @@ PUBLIC_HOLIDAYS_2024 = ["2024-05-01", "2024-05-09", "2024-05-20", "2024-10-03", 
 TEAM_IDS = ['P4G8TAV', 'PX5Y95N', 'P71QVSL']
 TEAMS = ['B2B Platform', 'B2B Enterprise', 'B2B Data Insights']
 SINCE_DATE = "#{Date.today - 14}T00:00:00Z"
-UNTIL_DATE = "#{Date.today}T00:00:00Z"
+UNTIL_DATE = "#{Date.today - 1}T23:59:59Z"
 
 def pull_log_entries(offset: 0)
   response = get_response(offset: offset)
