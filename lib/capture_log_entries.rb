@@ -134,10 +134,12 @@ def on_public_holiday?(time)
   PUBLIC_HOLIDAYS_2024.include? time.strftime('%Y-%m-%d')
 end
 
-clear_log_entries # Ensure clean file to start
-puts 'Pulling log entries'
-pull_log_entries
-puts 'Generating metrics'
-generate_metrics
-puts 'Clear Log entries'
-clear_log_entries # Ensure clean file to end, log entries wont be committed
+if Date.today.strftime('%W').to_i.odd? # Run bi-weekly
+  clear_log_entries # Ensure clean file to start
+  puts 'Pulling log entries'
+  pull_log_entries
+  puts 'Generating metrics'
+  generate_metrics
+  puts 'Clear Log entries'
+  clear_log_entries # Ensure clean file to end, log entries wont be committed
+end
