@@ -16,12 +16,10 @@
         }
 
         .lineChart {
-            max-width: 450px;
-            /* or any other max-width */
-            max-height: 300px;
-            /* or any other max-height */
+            max-width: 550px;
+            max-height: 350px;
             display: inline-block !important;
-            margin: 30px;
+            margin: 20px;
             /* width: 50%; */
         }
     </style>
@@ -97,6 +95,11 @@
                     data: setChartData(metric),
                     options: {
                         scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
                             y: {
                                 beginAtZero: true
                             }
