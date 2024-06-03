@@ -63,7 +63,8 @@ def generate_metrics
   # discard incidents which don't fall under the current date range
   current_incidents = data.select do |log_entry|
     log_entry[:incident][:created_at] > SINCE_DATE &&
-      log_entry[:incident][:created_at] < UNTIL_DATE
+      log_entry[:incident][:created_at] < UNTIL_DATE &&
+      production_incident?(log_entry)
   end
   grouped_by_team = current_incidents.group_by { |log_entry| log_entry[:teams][0][:summary] }
 
@@ -132,6 +133,10 @@ end
 
 def on_public_holiday?(time)
   PUBLIC_HOLIDAYS_2024.include? time.strftime('%Y-%m-%d')
+end
+
+def production_incident?(log_entry)
+  log_entry[:service][:summary].split(' ').first.split('-').last == 'production'
 end
 
 if Date.today.strftime('%W').to_i.odd? # Run bi-weekly
