@@ -610,5 +610,41 @@
         "high_urgency": 0
       }
     }
+  },
+  {
+    "date": "2024/10/21 - 2024/11/03",
+    "B2B Platform": {
+      "total_incidents": 45,
+      "incidents_on_work_hours": {
+        "low_urgency": 37,
+        "high_urgency": 2
+      },
+      "incidents_off_work_hours": {
+        "low_urgency": 6,
+        "high_urgency": 0
+      }
+    },
+    "B2B Enterprise": {
+      "total_incidents": 0,
+      "incidents_on_work_hours": {
+        "low_urgency": 0,
+        "high_urgency": 0
+      },
+      "incidents_off_work_hours": {
+        "low_urgency": 0,
+        "high_urgency": 0
+      }
+    },
+    "B2B Data Insights": {
+      "total_incidents": 13,
+      "incidents_on_work_hours": {
+        "low_urgency": 7,
+        "high_urgency": 2
+      },
+      "incidents_off_work_hours": {
+        "low_urgency": 3,
+        "high_urgency": 1
+      }
+    }
   }
 ]
