@@ -8,7 +8,7 @@ require 'date'
 SCHEDULE_FILE = 'lib/schedule.json'
 VIEW_FILE = 'index.html'
 
-# Test comment
+# Test comment 2
 def pull_pg_schedule(schedule_id:)
   response = get_response(schedule_id: schedule_id)
   puts response
