@@ -9,8 +9,8 @@ LOG_ENTRIES_FILE = 'tmp/log_entries.json'
 TEAM_METRICS_FILE = 'lib/team_metrics.json'
 LIMIT = 25
 PUBLIC_HOLIDAYS_2024 = ["2024-05-01", "2024-05-09", "2024-05-20", "2024-10-03", "2024-12-25", "2024-12-26"]
-TEAM_IDS = ['P4G8TAV', 'PX5Y95N', 'P71QVSL']
-TEAMS = ['B2B Platform', 'B2B Enterprise', 'B2B Data Insights']
+TEAM_IDS = ['P71QVSL', 'PL79GPB']
+TEAMS = ['B2B Enterprise', 'B2B Platform and Insights']
 SINCE_DATE = "#{Date.today - 14}T00:00:00Z"
 UNTIL_DATE = "#{Date.today - 1}T23:59:59Z"
 
