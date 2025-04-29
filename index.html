@@ -30,6 +30,7 @@
     <canvas class="lineChart" id="incidents_on_work_hours_high_urgency"></canvas>
     <canvas class="lineChart" id="incidents_off_work_hours_low_urgency"></canvas>
     <canvas class="lineChart" id="incidents_off_work_hours_high_urgency"></canvas>
+    <canvas class="lineChart" id="average_time_to_resolve"></canvas>
 
     <!-- <table id="jsonTable" style="width: 100%;">
         <thead>
@@ -64,16 +65,12 @@
                 return {
                     labels: labels,
                     datasets: [{
-                        label: 'B2B Platform',
-                        data: data.map(item => item["B2B Platform"][a[0]][a[1]]),
+                        label: 'B2B Platform and Insights',
+                        data: data.map(item => item["B2B Platform and Insights"][a[0]][a[1]]),
                         borderColor: '#434343',
                         borderWidth: 1
-                    }, {
-                        label: 'B2B Data Insights',
-                        data: data.map(item => item["B2B Data Insights"][a[0]][a[1]]),
-                        borderColor: '#9900ff',
-                        borderWidth: 1
-                    }, {
+                    },
+                    {
                         label: 'B2B Enterprise',
                         data: data.map(item => item["B2B Enterprise"][a[0]][a[1]]),
                         borderColor: '#33a854',
@@ -118,6 +115,7 @@
             createChart('incidents_on_work_hours_high_urgency', 'incidents_on_work_hours-high_urgency')
             createChart('incidents_off_work_hours_low_urgency', 'incidents_off_work_hours-low_urgency')
             createChart('incidents_off_work_hours_high_urgency', 'incidents_off_work_hours-high_urgency')
+            createChart('average_time_to_resolve', 'average_time_to_resolve-value')
         });
     </script>
 </body>
