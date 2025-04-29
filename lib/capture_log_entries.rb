@@ -8,7 +8,7 @@ require 'date'
 LOG_ENTRIES_FILE = 'tmp/log_entries.json'
 TEAM_METRICS_FILE = 'lib/team_metrics.json'
 LIMIT = 25
-PUBLIC_HOLIDAYS_2024 = ["2024-05-01", "2024-05-09", "2024-05-20", "2024-10-03", "2024-12-25", "2024-12-26"]
+PUBLIC_HOLIDAYS_2024 = ["2025-01-01", "2025-03-08", "2025-04-18", "2025-04-21", "2025-05-01", "2025-05-08", "2025-05-29", "2025-06-09", "2025-10-03", "2025-12-25", "2025-12-26"]
 TEAM_IDS = ['P71QVSL', 'PL79GPB']
 TEAMS = ['B2B Enterprise', 'B2B Platform and Insights']
 SINCE_DATE = "#{Date.today - 14}T00:00:00Z"
@@ -74,10 +74,12 @@ def generate_metrics
     if grouped_by_team.key?(team)
       grouped_by_incident = grouped_by_team[team].group_by { |log_entry| log_entry[:incident][:incident_number] }
       incidents = determine_work_hours_and_urgency(grouped_by_incident.map { |_k, v| v[0] })
+
       on_work_hours_low_urgency = incidents.select { |_k, v| v[:in_work_hours] && v[:urgency] == 'low' }
       on_work_hours_high_urgency = incidents.select { |_k, v| v[:in_work_hours] && v[:urgency] == 'high' }
       off_work_hours_low_urgency = incidents.select { |_k, v| !v[:in_work_hours] && v[:urgency] == 'low' }
       off_work_hours_high_urgency = incidents.select { |_k, v| !v[:in_work_hours] && v[:urgency] == 'high' }
+      time_to_resolves = incidents.map { |_k, v| v[:time_to_resolve] }
 
       metrics[team] = {
         total_incidents: grouped_by_incident.keys.count,
@@ -88,6 +90,9 @@ def generate_metrics
         incidents_off_work_hours: {
           low_urgency: off_work_hours_low_urgency.count,
           high_urgency: off_work_hours_high_urgency.count
+        },
+        average_time_to_resolve: {
+          value: (time_to_resolves.size > 0) ? ((time_to_resolves.sum/3600)/time_to_resolves.size).round(2) : 0
         }
       }
     else
@@ -100,6 +105,9 @@ def generate_metrics
         incidents_off_work_hours: {
           low_urgency: 0,
           high_urgency: 0
+        },
+        average_time_to_resolve: {
+          value: 0
         }
       }
     end
@@ -113,7 +121,8 @@ def determine_work_hours_and_urgency(log_entries)
     time = DateTime.parse(entry[:incident][:created_at]) + (2.0 / 24.0)
     incidents_created_at[entry[:incident][:incident_number]] = {
       in_work_hours: on_work_hours?(time) && !in_weekend?(time) && !on_public_holiday?(time),
-      urgency: entry[:incident][:urgency]
+      urgency: entry[:incident][:urgency],
+      time_to_resolve: (Time.new(entry[:incident][:resolved_at]) - Time.new(entry[:incident][:created_at])).to_f
     }
   end
   incidents_created_at
