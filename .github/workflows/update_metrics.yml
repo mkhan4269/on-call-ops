@@ -2,33 +2,47 @@ name: Update Metrics
 
 on:
   schedule:
-    # Runs at 11:00 every Monday
-    - cron: '0 9 * * 1'
+    - cron: '*/3 * * * *'
   workflow_dispatch:
 
 jobs:
   update-schedule:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.2'
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
 
-    - name: Generate and save metrics
-      env:
-        PD_TOKEN: ${{ secrets.PD_TOKEN }}
-      run: ruby lib/capture_log_entries.rb
+      - name: Generate and save metrics
+        run: ruby lib/capture_log_entries.rb
 
-    - name: Commit and push if changed
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/apoorva-babbel/literate-chainsaw.git
-        git add lib/team_metrics.json
-        git commit -m "Added new metrics" #|| exit 0   # This will exit with 0 if there's nothing to commit
-        git push origin main
+      - name: Create Pull Request with new metrics
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ github.token }}
+          commit-message: "Added new metrics"
+          title: "Automated update: new metrics"
+          body: "This PR was created automatically by the Update Metrics workflow."
+          branch: auto/update-metrics-${{ github.run_id }}
+          base: main
+          add-paths: |
+            lib/team_metrics.json
+
+      - name: Enable auto-merge for PR
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ github.token }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
+
+  build:
+    needs: update-schedule
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Build passed!"
